@@ -1,16 +1,16 @@
-function varargout = ManageDBAnalysisTools(varargin)
-% h = ManageDBAnalysisTools(varargin)
+function varargout = DB_ManageAnalysisTools(varargin)
+% h = DB_ManageAnalysisTools(varargin)
 
-% Edit the above text to modify the response to help ManageDBAnalysisTools
+% Edit the above text to modify the response to help DB_ManageAnalysisTools
 
-% Last Modified by GUIDE v2.5 11-Dec-2013 14:53:25
+% Last Modified by GUIDE v2.5 19-May-2016 08:43:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @ManageDBAnalysisTools_OpeningFcn, ...
-                   'gui_OutputFcn',  @ManageDBAnalysisTools_OutputFcn, ...
+                   'gui_OpeningFcn', @DB_ManageAnalysisTools_OpeningFcn, ...
+                   'gui_OutputFcn',  @DB_ManageAnalysisTools_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -25,8 +25,8 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before ManageDBAnalysisTools is made visible.
-function ManageDBAnalysisTools_OpeningFcn(hObj, ~, h, varargin)
+% --- Executes just before DB_ManageAnalysisTools is made visible.
+function DB_ManageAnalysisTools_OpeningFcn(hObj, ~, h, varargin)
 h.output = hObj;
 
 guidata(hObj, h);
@@ -41,7 +41,7 @@ CheckProtButtons(h);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = ManageDBAnalysisTools_OutputFcn(~, ~, h) 
+function varargout = DB_ManageAnalysisTools_OutputFcn(~, ~, h) 
 varargout{1} = h.output;
 
 
@@ -58,8 +58,8 @@ varargout{1} = h.output;
 
 function tools_Callback(hObj, ~, h)
 tstr = get_string(hObj);
-t = myms(sprintf(['SELECT protocol_id_str FROM db_util.analysis_tools ', ...
-    'WHERE tool = "%s"'],tstr));
+t = mymprintf(['SELECT protocol_id_str FROM db_util.analysis_tools ', ...
+    'WHERE tool = "%s"'],tstr);
 
 t = str2num(char(t)); %#ok<ST2NM>
 
@@ -146,7 +146,7 @@ end
 
 
 function CreateDBtable
-mym(['CREATE  TABLE IF NOT EXISTS db_util.analysis_tools (', ...
+myms(['CREATE  TABLE IF NOT EXISTS db_util.analysis_tools (', ...
      'id INT UNSIGNED NOT NULL AUTO_INCREMENT ,', ...
      'tool VARCHAR(45) NOT NULL ,', ...
      'protocol_id_str VARCHAR(45) NOT NULL ,', ...
@@ -176,9 +176,9 @@ else
     pstr = mat2str(Bid);
 end
  
-mym(['UPDATE db_util.analysis_tools ', ...
-     'SET protocol_id_str = "{S}" ', ...
-     'WHERE tool = "{S}"'],pstr,t);
+mymprintf(['UPDATE db_util.analysis_tools ', ...
+     'SET protocol_id_str = "%s" ', ...
+     'WHERE tool = "%s"'],pstr,t);
 
 
 function add_protocol_Callback(~, ~, h) %#ok<DEFNU>
